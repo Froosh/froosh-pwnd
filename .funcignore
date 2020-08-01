@@ -1,0 +1,7 @@
+*.js.map
+*.ts
+.editorconfig
+.funcignore
+.git*
+.vscode
+local.settings.json
