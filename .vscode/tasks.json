@@ -3,10 +3,19 @@
     "tasks": [
         {
             "type": "func",
-            "command": "host start",
+            "command": "host start --javascript",
             "problemMatcher": "$func-watch",
             "isBackground": true,
             "dependsOn": "npm install"
+        },
+        {
+            "type": "func",
+            "command": "extensions install",
+            "problemMatcher": [
+                "$func-watch"
+            ],
+            "label": "func: extensions install",
+            "isBackground": true
         },
         {
             "type": "shell",
@@ -20,22 +29,12 @@
             "problemMatcher": []
         },
         {
-            "type": "func",
-            "command": "extensions install",
-            "problemMatcher": [
-                "$func-watch"
-            ],
-            "label": "func: extensions install",
-            "isBackground": true
-        },
-        {
             "type": "npm",
             "script": "start",
             "problemMatcher": [
                 "$func-watch"
             ],
             "label": "npm: start",
-            "detail": "func host start",
             "isBackground": true,
             "dependsOn": "npm install"
         }

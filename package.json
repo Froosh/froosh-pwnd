@@ -5,7 +5,7 @@
     "license": "MIT",
     "repository": {},
     "scripts": {
-        "start": "func host start",
+        "start": "func host start --javascript",
         "test": "echo \"No tests yet...\""
     },
     "dependencies": {
