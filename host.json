@@ -1,6 +1,25 @@
 {
     "version": "2.0",
+    "extensions": {
+        "http": {
+            "routePrefix": "api",
+            "dynamicThrottlesEnabled": true,
+            "hsts": {
+                "isEnabled": true,
+                "maxAge": "10",
+                "preload": true
+            }
+        }
+    },
+    "extensionBundle": {
+        "id": "Microsoft.Azure.Functions.ExtensionBundle",
+        "version": "[1.*, 2.0.0)"
+    },
+    "healthMonitor": {
+        "enabled": true
+    },
     "logging": {
+        "fileLoggingMode": "always",
         "logLevel": {
             "default": "Trace"
         },
@@ -11,9 +30,5 @@
                 "excludedTypes": "Request"
             }
         }
-    },
-    "extensionBundle": {
-        "id": "Microsoft.Azure.Functions.ExtensionBundle",
-        "version": "[1.*, 2.0.0)"
     }
 }
