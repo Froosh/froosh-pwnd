@@ -3,6 +3,7 @@
     "azureFunctions.projectLanguage": "JavaScript",
     "azureFunctions.projectRuntime": "~3",
     "debug.internalConsoleOptions": "neverOpen",
+    "azureFunctions.deploySubpath": ".",
     "azureFunctions.preDeployTask": "npm prune",
     "azureFunctions.defaultFunctionAppToDeploy": "/subscriptions/19e4c175-3229-41e9-8dd6-5b2ca62c061f/resourcegroups/Froosh-Pwnd/providers/Microsoft.Web/sites/froosh-pwnd",
     "azure.resourceFilter": [
