@@ -1,3 +1,6 @@
+// Always
+'use strict';
+
 // Start Azure Application Insights as early as possible
 let appInsights = require("applicationinsights");
 appInsights.setup()
