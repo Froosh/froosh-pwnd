@@ -1,8 +1,11 @@
 {
-    "azureFunctions.deploySubpath": ".",
     "azureFunctions.postDeployTask": "npm install",
     "azureFunctions.projectLanguage": "JavaScript",
     "azureFunctions.projectRuntime": "~3",
     "debug.internalConsoleOptions": "neverOpen",
-    "azureFunctions.preDeployTask": "npm prune"
+    "azureFunctions.preDeployTask": "npm prune",
+    "azureFunctions.defaultFunctionAppToDeploy": "/subscriptions/19e4c175-3229-41e9-8dd6-5b2ca62c061f/resourcegroups/Froosh-Pwnd/providers/Microsoft.Web/sites/froosh-pwnd",
+    "azure.resourceFilter": [
+        "23ae57df-8a51-444a-a59a-328118705efc/19e4c175-3229-41e9-8dd6-5b2ca62c061f"
+    ]
 }
