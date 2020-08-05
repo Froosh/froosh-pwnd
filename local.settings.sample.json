@@ -1,0 +1,13 @@
+{
+    "IsEncrypted": false,
+    "Values": {
+        "APPINSIGHTS_INSTRUMENTATIONKEY": "<you need your own Applications Insight instance key>",
+        "APPLICATIONINSIGHTS_CONNECTION_STRING": "InstrumentationKey=<you need your own Applications Insight instance key>",
+        "ApplicationInsightsAgent_EXTENSION_VERSION": "~2",
+        "AzureWebJobsStorage": "<use the value provisioned when you created your function app>",
+        "FUNCTIONS_EXTENSION_VERSION": "~3",
+        "FUNCTIONS_WORKER_RUNTIME": "node",
+        "WEBSITE_NODE_DEFAULT_VERSION": "~12",
+        "WEBSITE_RUN_FROM_PACKAGE": "1"
+    }
+}
