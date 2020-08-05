@@ -3,7 +3,7 @@
     "tasks": [
         {
             "type": "func",
-            "command": "host start --javascript",
+            "command": "host start",
             "problemMatcher": "$func-watch",
             "isBackground": true,
             "dependsOn": "npm install"
