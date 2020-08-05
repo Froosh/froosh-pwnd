@@ -23,8 +23,8 @@ axios.default.httpsAgent = https.globalAgent;
 
 const crypto = require('crypto');
 
-module.exports = async function (context, req) {
-    let functionResult = {
+const httpTrigger = async function (context, req) {
+    const functionResult = {
         status: 200,
         headers: {
             'Content-Type': 'application/json'
@@ -39,13 +39,13 @@ module.exports = async function (context, req) {
 
     if (req.body && req.body.password) {
         // Generate SHA1 hash of the password and split it into prefix/suffix
-        let sha1 = crypto.createHash('sha1');
+        const sha1 = crypto.createHash('sha1');
         sha1.update(req.body.password);
-        let sha1Digest = sha1.digest('hex').toUpperCase();
-        let sha1Prefix = sha1Digest.slice(0, 5);
-        let sha1Suffix = sha1Digest.slice(5);
+        const sha1Digest = sha1.digest('hex').toUpperCase();
+        const sha1Prefix = sha1Digest.slice(0, 5);
+        const sha1Suffix = sha1Digest.slice(5);
 
-        let hibpURL = encodeURI(`${hibpBaseURL}${sha1Prefix}`);
+        const hibpURL = encodeURI(`${hibpBaseURL}${sha1Prefix}`);
 
         context.log.info('Checking URL:', hibpURL);
 
@@ -53,13 +53,13 @@ module.exports = async function (context, req) {
 
         await axios.get(hibpURL, hibpOptions)
             .then(function (response) {
-                let dataArray = response.data.split('\r\n');
+                const dataArray = response.data.split('\r\n');
                 context.log.info(`Received ${dataArray.length} result lines.`);
 
                 // Chop the received data lines into suffix and count values
                 // Then select the entry which matches the password SHA1 suffix (if any)
-                let filteredArray = dataArray.map(function (line) {
-                    let parts = line.split(':');
+                const filteredArray = dataArray.map(function (line) {
+                    const parts = line.split(':');
                     return {
                         suffix: parts[0],
                         count: parts[1]
@@ -69,7 +69,7 @@ module.exports = async function (context, req) {
                 });
 
                 // If an entry is found use the result, otherwise 0
-                let sha1DigestCount = filteredArray.length === 1 ? filteredArray[0].count : 0;
+                const sha1DigestCount = filteredArray.length === 1 ? filteredArray[0].count : 0;
                 context.log.info(`Password Found ${sha1DigestCount} times.`);
 
                 // Update the response for success/fail
@@ -91,4 +91,30 @@ module.exports = async function (context, req) {
 
     context.log.verbose('Returning Result:', functionResult);
     context.res = functionResult;
+};
+
+// As per https://www.npmjs.com/package/applicationinsights#azure-functions
+// To link request and dependency calls correctly
+module.exports = async function (context, req) {
+    // Start an AppInsights Correlation Context using the provided Function context
+    const correlationContext = appInsights.startOperation(context, req);
+
+    // Wrap the Function runtime with correlationContext
+    return appInsights.wrapWithCorrelationContext(async () => {
+        const startTime = Date.now(); // Start trackRequest timer
+
+        // Run the Function
+        await httpTrigger(context, req);
+
+        // Track Request on completion
+        appInsights.defaultClient.trackRequest({
+            name: context.req.method + " " + context.req.url,
+            resultCode: context.res.status,
+            success: true,
+            url: req.url,
+            duration: Date.now() - startTime,
+            id: correlationContext.operation.parentId,
+        });
+        appInsights.defaultClient.flush();
+    }, correlationContext)();
 };
