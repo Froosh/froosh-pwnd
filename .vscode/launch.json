@@ -3,17 +3,11 @@
     "configurations": [
         {
             "type": "node-terminal",
-            "name": "Run Script: start",
+            "name": "Start Function",
             "request": "launch",
+            "preLaunchTask": "npm install",
             "command": "npm run start",
             "cwd": "${workspaceFolder}"
-        },
-        {
-            "name": "Attach to Node Functions",
-            "type": "node",
-            "request": "attach",
-            "port": 9229,
-            "preLaunchTask": "func: host start"
         }
     ]
 }
