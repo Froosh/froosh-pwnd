@@ -24,7 +24,18 @@ axios.default.httpsAgent = https.globalAgent;
 const crypto = require('crypto');
 
 module.exports = async function (context, req) {
-    context.log.verbose('Context Received:', context);
+    let functionResult = {
+        status: 200,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: {
+            version: '1.0.0',
+            passwordOk: false,
+            status: 200,
+            userMessage: null
+        }
+    };
 
     if (req.body && req.body.password) {
         // Generate SHA1 hash of the password and split it into prefix/suffix
@@ -40,10 +51,10 @@ module.exports = async function (context, req) {
 
         hibpOptions.headers["User-Agent"] = req.headers['user-agent'];
 
-        context.res = await axios.get(hibpURL, hibpOptions)
+        await axios.get(hibpURL, hibpOptions)
             .then(function (response) {
                 let dataArray = response.data.split('\r\n');
-                context.log.verbose(`Received ${dataArray.length} result lines.`);
+                context.log.info(`Received ${dataArray.length} result lines.`);
 
                 // Chop the received data lines into suffix and count values
                 // Then select the entry which matches the password SHA1 suffix (if any)
@@ -59,51 +70,25 @@ module.exports = async function (context, req) {
 
                 // If an entry is found use the result, otherwise 0
                 let sha1DigestCount = filteredArray.length === 1 ? filteredArray[0].count : 0;
+                context.log.info(`Password Found ${sha1DigestCount} times.`);
 
-                // Construct the HTTPS responses for success/fail
-                return sha1DigestCount === 0 ? {
-                    status: 200,
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: {
-                        passwordOk: true
-                    }
-                } : {
-                        status: 409,
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: {
-                            version: '1.0.0',
-                            status: 409,
-                            userMessage: `This password has been exposed ${sha1DigestCount} times, choose another.`
-                        }
-                    };
+                // Update the response for success/fail
+                if (sha1DigestCount === 0) {
+                    functionResult.body.passwordOk = true;
+                } else {
+                    functionResult.status = 409
+                    functionResult.body.status = 409;
+                    functionResult.body.userMessage = `This password has been exposed ${sha1DigestCount} times, choose another.`
+                }
             })
             .catch(function (error) {
                 context.log.error(error);
-                return {
-                    status: 200,
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: {
-                        passwordOk: false,
-                        message: 'Error checking password against haveibeenpwned.'
-                    }
-                }
+                functionResult.body.userMessage = 'Error checking password against haveibeenpwned.'
             });
     } else {
-        context.res = {
-            status: 200,
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: {
-                passwordOk: false,
-                message: 'No password provided.'
-            }
-        };
+        functionResult.body.userMessage = 'No password provided.';
     }
+
+    context.log.verbose('Returning Result:', functionResult);
+    context.res = functionResult;
 };
