@@ -93,7 +93,7 @@ const httpTrigger = async function (context, req) {
     context.res = functionResult;
 };
 
-// As per https://www.npmjs.com/package/applicationinsights#azure-functions
+// As per https://github.com/microsoft/ApplicationInsights-node.js#azure-functions
 // To link request and dependency calls correctly
 module.exports = async function (context, req) {
     // Start an AppInsights Correlation Context using the provided Function context
@@ -108,7 +108,7 @@ module.exports = async function (context, req) {
 
         // Track Request on completion
         appInsights.defaultClient.trackRequest({
-            name: context.req.method + " " + context.req.url,
+            name: `${context.req.method} ${context.req.url}`,
             resultCode: context.res.status,
             success: true,
             url: req.url,
