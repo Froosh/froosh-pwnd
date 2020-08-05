@@ -1,12 +1,18 @@
 {
-    "name": "froosh-pwnd-function",
-    "version": "0.0.1",
-    "description": "Messing around with azure functions, maybe to check passwords against HIBP",
+    "name": "froosh-pwnd",
+    "version": "0.1.0",
+    "description": "A cheap and cheerful Azure Function to check passwords against HIBP",
     "license": "MIT",
-    "repository": {},
+    "repository": {
+        "url": "https://github.com/froosh/froosh-pwnd"
+    },
+    "author": {
+        "name": "Robin Frousheger",
+        "email": "robin@froosh.net",
+        "url": "https://github.com/froosh/"
+    },
     "scripts": {
-        "start": "func host start",
-        "test": "echo \"No tests yet...\""
+        "start": "func host start"
     },
     "dependencies": {
         "applicationinsights": "^1.8.4",
