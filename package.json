@@ -9,7 +9,7 @@
         "test": "echo \"No tests yet...\""
     },
     "dependencies": {
-        "applicationinsights": "^1.8.3",
+        "applicationinsights": "^1.8.4",
         "axios": "^0.19.2"
     },
     "devDependencies": {}
