@@ -4,7 +4,9 @@
 // Have-I-Been-Pwned config details
 const hibpBaseURL = 'https://api.pwnedpasswords.com/range/';
 const hibpOptions = {
-    headers: { 'Add-Padding': true }
+    headers: {
+        'Add-Padding': true
+    }
 };
 
 // Start Azure Application Insights before anything else
@@ -22,49 +24,56 @@ axios.default.httpsAgent = https.globalAgent;
 const crypto = require('crypto');
 
 module.exports = async function (context, req) {
-    context.log('JavaScript HTTP trigger function processed a request.');
+    context.log.verbose('Context Received:', context);
 
     if (req.body && req.body.password) {
-        let passwordToCheck = req.body.password;
+        // Generate SHA1 hash of the password and split it into prefix/suffix
         let sha1 = crypto.createHash('sha1');
-
-        sha1.update(passwordToCheck);
+        sha1.update(req.body.password);
         let sha1Digest = sha1.digest('hex').toUpperCase();
         let sha1Prefix = sha1Digest.slice(0, 5);
         let sha1Suffix = sha1Digest.slice(5);
 
-        let hibpURL = `${hibpBaseURL}${encodeURIComponent(sha1Prefix)}`;
+        let hibpURL = encodeURI(`${hibpBaseURL}${sha1Prefix}`);
 
-        context.log.verbose('Checking URL:', hibpURL);
+        context.log.info('Checking URL:', hibpURL);
+
+        hibpOptions.headers["User-Agent"] = req.headers['user-agent'];
 
         context.res = await axios.get(hibpURL, hibpOptions)
             .then(function (response) {
-                context.log.verbose('Response Headers:', JSON.stringify(response.headers));
+                let dataArray = response.data.split('\r\n');
+                context.log.verbose(`Received ${dataArray.length} result lines.`);
 
-                let dataArray = response.data.split('\n');
-                context.log.verbose(`Received ${dataArray.length} result lines`);
-
-                let mappedArray = dataArray.map(function (line) {
+                // Chop the received data lines into suffix and count values
+                // Then select the entry which matches the password SHA1 suffix (if any)
+                let filteredArray = dataArray.map(function (line) {
                     let parts = line.split(':');
                     return {
-                        suffix: parts[0].trim(),
-                        count: parts[1].trim()
+                        suffix: parts[0],
+                        count: parts[1]
                     };
-                });
-
-                let filteredArray = mappedArray.filter(function (entry) {
+                }).filter(function (entry) {
                     return entry.suffix === sha1Suffix;
                 });
 
-                let sha1DigestCount = filteredArray[0] ? filteredArray[0].count : 0;
+                // If an entry is found use the result, otherwise 0
+                let sha1DigestCount = filteredArray.length === 1 ? filteredArray[0].count : 0;
 
+                // Construct the HTTPS responses for success/fail
                 return sha1DigestCount === 0 ? {
                     status: 200,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
                     body: {
                         passwordOk: true
                     }
                 } : {
                         status: 409,
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
                         body: {
                             version: '1.0.0',
                             status: 409,
@@ -73,19 +82,27 @@ module.exports = async function (context, req) {
                     };
             })
             .catch(function (error) {
-                context.log.error(JSON.stringify(error));
+                context.log.error(error);
                 return {
                     status: 200,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
                     body: {
-                        passwordOk: false
+                        passwordOk: false,
+                        message: 'Error checking password against haveibeenpwned.'
                     }
                 }
             });
     } else {
         context.res = {
             status: 200,
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: {
-                passwordOk: false
+                passwordOk: false,
+                message: 'No password provided.'
             }
         };
     }
