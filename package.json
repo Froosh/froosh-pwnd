@@ -15,8 +15,8 @@
         "start": "func host start"
     },
     "dependencies": {
-        "applicationinsights": "^1.8.4",
-        "axios": "^0.19.2"
+        "applicationinsights": "^1.8.10",
+        "axios": "^0.21.1"
     },
     "devDependencies": {}
 }
