@@ -30,10 +30,16 @@ const httpTrigger = async function (context, req) {
             'Content-Type': 'application/json'
         },
         body: {
-            version: '1.0.0',
+            version: '1.1.0',
             passwordOk: false,
             status: 200,
-            userMessage: null
+            userMessage: null,
+
+            // Debug Mode Return Values
+            code: null,
+            developerMessage: null,
+            moreInfo: null,
+            requestId: context.invocationId
         }
     };
 
@@ -76,14 +82,38 @@ const httpTrigger = async function (context, req) {
                 if (sha1DigestCount === 0) {
                     functionResult.body.passwordOk = true;
                 } else {
-                    functionResult.status = 409
+                    functionResult.status = 409;
                     functionResult.body.status = 409;
-                    functionResult.body.userMessage = `This password has been exposed ${sha1DigestCount} times, choose another.`
+                    functionResult.body.userMessage = `Your password has been exposed ${sha1DigestCount} times, choose another.`;
                 }
             })
             .catch(function (error) {
-                context.log.error(error);
-                functionResult.body.userMessage = 'Error checking password against haveibeenpwned.'
+                if (error.response) {
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    console.log(error.response);
+
+                    functionResult.status = error.response.status;
+                    functionResult.body.status = error.response.status;
+
+                    functionResult.body.code = error.response.status;
+                    functionResult.body.developerMessage = error.response.data;
+                    functionResult.body.moreInfo = error.response.headers;
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                    // http.ClientRequest in node.js
+                    console.log(error.request);
+
+                    functionResult.body.developerMessage = error.request;
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log('Error', error.message);
+
+                    functionResult.body.developerMessage = error.message;
+                }
+
+                functionResult.body.userMessage = 'Error checking password against haveibeenpwned.';
             });
     } else {
         functionResult.body.userMessage = 'No password provided.';
