@@ -10,18 +10,18 @@ const hibpOptions = {
 };
 
 // Start Azure Application Insights before anything else
-const appInsights = require('applicationinsights');
-appInsights.setup()
+import { setup, startOperation, wrapWithCorrelationContext, defaultClient } from 'applicationinsights';
+setup()
     .setSendLiveMetrics(true)
     .start();
 
-const https = require('https');
-https.globalAgent.keepAlive = true;
+import { globalAgent } from 'https';
+globalAgent.keepAlive = true;
 
-const axios = require('axios');
-axios.default.httpsAgent = https.globalAgent;
+import axios, { get } from 'axios';
+axios.httpsAgent = globalAgent;
 
-const crypto = require('crypto');
+import { createHash } from 'crypto';
 
 const httpTrigger = async function (context, req) {
     const functionResult = {
@@ -30,7 +30,7 @@ const httpTrigger = async function (context, req) {
             'Content-Type': 'application/json'
         },
         body: {
-            version: '1.1.0',
+            version: '0.2.0',
             passwordOk: false,
             status: 200,
             userMessage: null,
@@ -45,7 +45,7 @@ const httpTrigger = async function (context, req) {
 
     if (req.body && req.body.password) {
         // Generate SHA1 hash of the password and split it into prefix/suffix
-        const sha1 = crypto.createHash('sha1');
+        const sha1 = createHash('sha1');
         sha1.update(req.body.password);
         const sha1Digest = sha1.digest('hex').toUpperCase();
         const sha1Prefix = sha1Digest.slice(0, 5);
@@ -57,7 +57,7 @@ const httpTrigger = async function (context, req) {
 
         hibpOptions.headers["User-Agent"] = req.headers['user-agent'];
 
-        await axios.get(hibpURL, hibpOptions)
+        await get(hibpURL, hibpOptions)
             .then(function (response) {
                 const dataArray = response.data.split('\r\n');
                 context.log.info(`Received ${dataArray.length} result lines.`);
@@ -125,19 +125,19 @@ const httpTrigger = async function (context, req) {
 
 // As per https://github.com/microsoft/ApplicationInsights-node.js#azure-functions
 // To link request and dependency calls correctly
-module.exports = async function (context, req) {
+export default async function (context, req) {
     // Start an AppInsights Correlation Context using the provided Function context
-    const correlationContext = appInsights.startOperation(context, req);
+    const correlationContext = startOperation(context, req);
 
     // Wrap the Function runtime with correlationContext
-    return appInsights.wrapWithCorrelationContext(async () => {
+    return wrapWithCorrelationContext(async () => {
         const startTime = Date.now(); // Start trackRequest timer
 
         // Run the Function
         await httpTrigger(context, req);
 
         // Track Request on completion
-        appInsights.defaultClient.trackRequest({
+        defaultClient.trackRequest({
             name: `${context.req.method} ${context.req.url}`,
             resultCode: context.res.status,
             success: true,
@@ -145,6 +145,6 @@ module.exports = async function (context, req) {
             duration: Date.now() - startTime,
             id: correlationContext.operation.parentId,
         });
-        appInsights.defaultClient.flush();
+        defaultClient.flush();
     }, correlationContext)();
 };

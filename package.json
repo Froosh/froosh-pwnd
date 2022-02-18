@@ -1,6 +1,6 @@
 {
     "name": "froosh-pwnd",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "A cheap and cheerful Azure Function to check passwords against HIBP",
     "license": "MIT",
     "repository": {
