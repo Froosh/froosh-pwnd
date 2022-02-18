@@ -2,6 +2,6 @@
     "recommendations": [
         "editorconfig.editorconfig",
         "ms-azuretools.vscode-azurefunctions",
-        "ms-vscode.node-debug2"
+        "ms-vscode.js-debug"
     ]
 }
