@@ -13,7 +13,7 @@
     },
     "extensionBundle": {
         "id": "Microsoft.Azure.Functions.ExtensionBundle",
-        "version": "[1.*, 2.0.0)"
+        "version": "[3.3.0, 4.0.0)"
     },
     "healthMonitor": {
         "enabled": true
@@ -26,7 +26,6 @@
         "applicationInsights": {
             "samplingSettings": {
                 "isEnabled": true,
-                "maxTelemetryItemsPerSecond": 50,
                 "excludedTypes": "Request"
             }
         }
