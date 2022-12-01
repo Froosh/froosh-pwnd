@@ -4,4 +4,4 @@
 .funcignore
 .git*
 .vscode
-local.settings.json
+local.settings.*

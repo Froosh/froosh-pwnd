@@ -18,7 +18,7 @@ setup()
 import { globalAgent } from 'https';
 globalAgent.keepAlive = true;
 
-import axios, { get } from 'axios';
+import axios from 'axios';
 axios.httpsAgent = globalAgent;
 
 import { createHash } from 'crypto';
@@ -57,7 +57,7 @@ const httpTrigger = async function (context, req) {
 
         hibpOptions.headers["User-Agent"] = req.headers['user-agent'];
 
-        await get(hibpURL, hibpOptions)
+        await axios.get(hibpURL, hibpOptions)
             .then(function (response) {
                 const dataArray = response.data.split('\r\n');
                 context.log.info(`Received ${dataArray.length} result lines.`);
