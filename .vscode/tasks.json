@@ -1,42 +1,42 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "type": "func",
-            "command": "host start",
-            "problemMatcher": "$func-watch",
-            "isBackground": true,
-            "dependsOn": "npm install"
-        },
-        {
-            "type": "func",
-            "command": "extensions install",
-            "problemMatcher": [
-                "$func-watch"
-            ],
-            "label": "func: extensions install",
-            "isBackground": true
-        },
-        {
-            "type": "shell",
-            "label": "npm install",
-            "command": "npm install"
-        },
-        {
-            "type": "shell",
-            "label": "npm prune",
-            "command": "npm prune --production",
-            "problemMatcher": []
-        },
-        {
-            "type": "npm",
-            "script": "start",
-            "problemMatcher": [
-                "$func-watch"
-            ],
-            "label": "npm: start",
-            "isBackground": true,
-            "dependsOn": "npm install"
-        }
-    ]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "func",
+      "command": "host start",
+      "problemMatcher": "$func-watch",
+      "isBackground": true,
+      "dependsOn": "npm install"
+    },
+    {
+      "type": "func",
+      "command": "extensions install",
+      "problemMatcher": [
+        "$func-watch"
+      ],
+      "label": "func: extensions install",
+      "isBackground": true
+    },
+    {
+      "type": "shell",
+      "label": "npm install",
+      "command": "npm install"
+    },
+    {
+      "type": "shell",
+      "label": "npm prune",
+      "command": "npm prune --production",
+      "problemMatcher": []
+    },
+    {
+      "type": "npm",
+      "script": "start",
+      "problemMatcher": [
+        "$func-watch"
+      ],
+      "label": "npm: start",
+      "isBackground": true,
+      "dependsOn": "npm install"
+    }
+  ]
 }

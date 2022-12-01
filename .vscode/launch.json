@@ -1,13 +1,13 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "type": "node-terminal",
-            "name": "Start Function",
-            "request": "launch",
-            "preLaunchTask": "npm install",
-            "command": "npm run start",
-            "cwd": "${workspaceFolder}"
-        }
-    ]
+  "version": "0.2.1",
+  "configurations": [
+    {
+      "type": "node-terminal",
+      "name": "Start Function",
+      "request": "launch",
+      "preLaunchTask": "npm install",
+      "command": "npm run start",
+      "cwd": "${workspaceFolder}"
+    }
+  ]
 }

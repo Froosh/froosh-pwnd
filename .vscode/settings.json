@@ -1,21 +1,21 @@
 {
-    "azureFunctions.deploySubpath": ".",
-    "azureFunctions.postDeployTask": "npm install",
-    "azureFunctions.preDeployTask": "npm prune",
-    "azureFunctions.projectLanguage": "JavaScript",
-    "azureFunctions.projectRuntime": "~4",
-    "editor.renderWhitespace": "boundary",
-    "files.associations": {
-        ".funcignore": "ignore"
-    },
-    "git.enableCommitSigning": true,
-    "[jsonc]": {
-        "editor.defaultFormatter": "vscode.json-language-features"
-    },
-    "[json]": {
-        "editor.defaultFormatter": "vscode.json-language-features"
-    },
-    "[javascript]": {
-        "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
-    },
+  "azureFunctions.deploySubpath": ".",
+  "azureFunctions.postDeployTask": "npm install",
+  "azureFunctions.preDeployTask": "npm prune",
+  "azureFunctions.projectLanguage": "JavaScript",
+  "azureFunctions.projectRuntime": "~4",
+  "editor.renderWhitespace": "boundary",
+  "files.associations": {
+    ".funcignore": "ignore"
+  },
+  "git.enableCommitSigning": true,
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  },
 }
