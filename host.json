@@ -6,8 +6,7 @@
       "dynamicThrottlesEnabled": true,
       "hsts": {
         "isEnabled": true,
-        "maxAge": "10",
-        "preload": true
+        "maxAge": "10"
       }
     }
   },
