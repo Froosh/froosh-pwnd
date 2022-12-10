@@ -4,8 +4,9 @@
 // Have-I-Been-Pwned config details
 const hibpBaseURL = "https://api.pwnedpasswords.com/range/";
 const hibpOptions = {
+  decompress: true,
   headers: {
-    "Accept-Encoding": "none",
+    "Accept-Encoding": "gzip, compress, deflate",
     "Add-Padding": true,
   },
 };
