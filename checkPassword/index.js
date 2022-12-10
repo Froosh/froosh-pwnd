@@ -58,6 +58,7 @@ const httpTrigger = async function (context, req) {
 
     context.log.info("Checking URL:", hibpURL);
 
+    hibpOptions.headers["Accept-Encoding"] = "none";
     hibpOptions.headers["User-Agent"] = req.headers["user-agent"];
 
     await axios
