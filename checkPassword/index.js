@@ -11,13 +11,10 @@ const hibpOptions = {
 };
 
 // Start Azure Application Insights before anything else
-import {
-  setup,
-  startOperation,
-  wrapWithCorrelationContext,
-  defaultClient,
-} from "applicationinsights";
-setup().setSendLiveMetrics(true).start();
+import applicationinsights from "applicationinsights";
+applicationinsights.setup().setSendLiveMetrics(true);
+applicationinsights.defaultClient.setAutoPopulateAzureProperties(true);
+applicationinsights.start();
 
 import { globalAgent } from "https";
 globalAgent.keepAlive = true;
@@ -136,17 +133,17 @@ const httpTrigger = async function (context, req) {
 // To link request and dependency calls correctly
 export default async function (context, req) {
   // Start an AppInsights Correlation Context using the provided Function context
-  const correlationContext = startOperation(context, req);
+  const correlationContext = applicationinsights.startOperation(context, req);
 
   // Wrap the Function runtime with correlationContext
-  return wrapWithCorrelationContext(async () => {
+  return applicationinsights.wrapWithCorrelationContext(async () => {
     const startTime = Date.now(); // Start trackRequest timer
 
     // Run the Function
     await httpTrigger(context, req);
 
     // Track Request on completion
-    defaultClient.trackRequest({
+    applicationinsights.defaultClient.trackRequest({
       name: `${context.req.method} ${context.req.url}`,
       resultCode: context.res.status,
       success: true,
@@ -154,6 +151,6 @@ export default async function (context, req) {
       duration: Date.now() - startTime,
       id: correlationContext.operation.parentId,
     });
-    defaultClient.flush();
+    applicationinsights.defaultClient.flush();
   }, correlationContext)();
 }
