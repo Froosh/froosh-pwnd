@@ -31,7 +31,7 @@ const httpTrigger = async function (context, req) {
       "Content-Type": "application/json",
     },
     body: {
-      version: "0.2.0",
+      version: "0.2.2",
       passwordOk: false,
       status: 200,
       userMessage: null,
