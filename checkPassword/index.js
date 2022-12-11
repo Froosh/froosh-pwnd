@@ -1,16 +1,6 @@
 // Always
 "use strict";
 
-// Have-I-Been-Pwned config details
-const hibpBaseURL = "https://api.pwnedpasswords.com/range/";
-const hibpOptions = {
-  decompress: true,
-  headers: {
-    "Accept-Encoding": "gzip, compress, deflate",
-    "Add-Padding": true,
-  },
-};
-
 // Start Azure Application Insights before anything else
 import applicationinsights from "applicationinsights";
 applicationinsights.setup().setSendLiveMetrics(true);
@@ -19,7 +9,21 @@ applicationinsights.start();
 
 import axios from "axios";
 
-import { createHash } from "crypto";
+import { createHash } from "node:crypto";
+
+import https from "node:https";
+
+// Have-I-Been-Pwned config details
+const hibpBaseURL = "https://api.pwnedpasswords.com/range/";
+const hibpOptions = {
+  decompress: true,
+  headers: {
+    "Accept-Encoding": "gzip, compress, deflate",
+    "Add-Padding": true,
+  },
+  httpsAgent: new https.Agent({keepAlive: true}),
+  timeout: 1500,
+};
 
 const httpTrigger = async function (context, req) {
   const functionResult = {
