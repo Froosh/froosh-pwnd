@@ -17,11 +17,7 @@ applicationinsights.setup().setSendLiveMetrics(true);
 applicationinsights.defaultClient.setAutoPopulateAzureProperties(true);
 applicationinsights.start();
 
-import { globalAgent } from "https";
-globalAgent.keepAlive = true;
-
 import axios from "axios";
-axios.httpsAgent = globalAgent;
 
 import { createHash } from "crypto";
 
