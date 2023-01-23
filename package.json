@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "applicationinsights": "^2.4.0",
-    "axios": "^1.2.2"
+    "axios": "^1.2.3"
   },
   "devDependencies": {}
 }
