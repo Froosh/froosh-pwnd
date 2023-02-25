@@ -8,14 +8,16 @@
   "files.associations": {
     ".funcignore": "ignore"
   },
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
   "git.enableCommitSigning": true,
+  "[javascript]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  },
   "[jsonc]": {
     "editor.defaultFormatter": "vscode.json-language-features"
   },
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"
-  },
-  "[javascript]": {
-    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
   },
 }
