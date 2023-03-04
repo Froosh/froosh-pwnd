@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "applicationinsights-native-metrics": "^0.0.8",
-    "azure-functions-core-tools": "^4.0.4915",
+    "azure-functions-core-tools": "^4.0.5030",
     "eslint": "^8.35.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.27.5",
