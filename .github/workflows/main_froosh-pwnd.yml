@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/azure/functions-action
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Deploy to Function App - froosh-pwnd
+name: Deploy to Function App
 
 on:
   push:
@@ -10,24 +10,27 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_FUNCTIONAPP_NAME: "froosh-pwnd"
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: "."
-  AZURE_FUNCTIONAPP_SLOT: "production"
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   build-and-deploy:
+    environment: production
     runs-on: ubuntu-latest
     steps:
-      - name: "Checkout GitHub Action"
+      - name: 'Checkout GitHub'
         uses: actions/checkout@v3
 
       - name: Setup Node ${{ env.NODE_VERSION }} Environment
         uses: actions/setup-node@v3
         with:
-          cache: "npm"
-          node-version-file: ".nvmrc"
+          cache: 'npm'
+          node-version-file: '.nvmrc'
 
-      - name: "Resolve Project Dependencies Using Npm"
+      - name: 'Resolve Project Dependencies Using Npm'
         shell: bash
         run: |
           pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
@@ -36,11 +39,25 @@ jobs:
           npm run test --if-present
           popd
 
-      - name: "Run Azure Functions Action"
-        uses: Azure/functions-action@v1
-        id: fa
+      - name: 'Az CLI login'
+        uses: Azure/login@v1
         with:
-          app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-          slot-name: ${{ env.AZURE_FUNCTIONAPP_SLOT }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+
+      - name: 'Run Azure Functions Action'
+        uses: Azure/functions-action@v1
+        with:
+          app-name: ${{ secrets.AZURE_FUNCTIONAPP_NAME }}
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+          respect-funcignore: true
+          slot-name: ${{ env.AZURE_FUNCTIONAPP_SLOT }}
+
+      - name: 'Az CLI logout'
+        uses: Azure/CLI@v1
+        with:
+          inlineScript: |
+            az logout
+            az cache purge
+            az account clear
