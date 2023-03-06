@@ -1,6 +1,7 @@
 *.js.map
 *.ts
 .editorconfig
+.eslintrc*
 .funcignore
 .git*
 .vscode
