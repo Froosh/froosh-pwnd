@@ -20,7 +20,7 @@
     "axios": "^1.3.4"
   },
   "devDependencies": {
-    "applicationinsights-native-metrics": "^0.0.8",
+    "applicationinsights-native-metrics": "^0.0.9",
     "azure-functions-core-tools": "^4.0.5030",
     "eslint": "^8.35.0",
     "eslint-config-standard": "^17.0.0",
