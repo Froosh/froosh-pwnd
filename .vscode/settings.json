@@ -11,6 +11,14 @@
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
   "git.enableCommitSigning": true,
+  "yaml.schemas": {
+    "https://json.schemastore.org/dependabot-2.0.json": [
+      ".github/dependabot.yaml"
+    ],
+    "https://json.schemastore.org/github-workflow.json": [
+      ".github/workflows/*.yaml"
+    ],
+  },
   "[javascript]": {
     "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
   },
@@ -19,5 +27,8 @@
   },
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
   },
 }
