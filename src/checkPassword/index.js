@@ -1,16 +1,25 @@
 // Always
 'use strict'
 
+import applicationinsights from 'applicationinsights'
+
 import axios from 'axios'
 
 import { createHash } from 'node:crypto'
 
 import https from 'node:https'
 
+import { DefaultAzureCredential } from '@azure/identity'
+
 // Start Azure Application Insights before anything else
-import applicationinsights from 'applicationinsights'
 applicationinsights.setup()
 applicationinsights.start()
+
+// Set up default managed service identity
+const credential = new DefaultAzureCredential()
+
+// Activate using credential to communicate with application insights
+applicationinsights.defaultClient.config.aadTokenCredential = credential
 
 // Have-I-Been-Pwned config details
 const hibpBaseURL = 'https://api.pwnedpasswords.com/range/'
@@ -31,7 +40,7 @@ const httpTrigger = async function (context, req) {
       'Content-Type': 'application/json; charset=utf-8'
     },
     body: {
-      version: '0.2.5',
+      version: '0.3.0',
       passwordOk: false,
       status: 200,
       userMessage: null,
