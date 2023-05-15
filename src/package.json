@@ -16,7 +16,7 @@
     "start": "func host start --javascript --verbose"
   },
   "dependencies": {
-    "@azure/identity": "^3.1.4",
+    "@azure/identity": "^3.2.1",
     "applicationinsights": "^2.6.0",
     "axios": "^1.4.0"
   },
