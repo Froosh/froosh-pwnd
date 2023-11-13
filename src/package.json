@@ -18,7 +18,7 @@
   "dependencies": {
     "@azure/identity": "^3.3.2",
     "applicationinsights": "^2.9.0",
-    "axios": "^1.6.0"
+    "axios": "^1.6.1"
   },
   "devDependencies": {
     "applicationinsights-native-metrics": "^0.0.10",
