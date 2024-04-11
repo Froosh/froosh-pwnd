@@ -16,18 +16,17 @@
     "start": "func host start --javascript --verbose"
   },
   "dependencies": {
-    "@azure/identity": "^4.0.1",
-    "applicationinsights": "^2.9.5",
-    "axios": "^1.6.8"
+    "@azure/identity": "latest",
+    "applicationinsights": "latest",
+    "axios": "latest"
   },
   "devDependencies": {
-    "applicationinsights-native-metrics": "^0.0.10",
-    "azure-functions-core-tools": "^4.0.5611",
-    "eslint": "^8.57.0",
-    "eslint-config-standard": "^17.1.0",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-n": "^17.2.0",
-    "eslint-plugin-promise": "^6.1.1",
-    "prettier": "^3.2.5"
+    "applicationinsights-native-metrics": "latest",
+    "azure-functions-core-tools": "latest",
+    "eslint": "latest",
+    "eslint-plugin-import": "latest",
+    "eslint-plugin-n": "latest",
+    "eslint-plugin-promise": "latest",
+    "prettier": "latest"
   }
 }
