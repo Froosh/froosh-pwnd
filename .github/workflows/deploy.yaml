@@ -40,25 +40,25 @@ jobs:
           npm run test --if-present
           popd
 
-      - name: 'Az CLI login'
-        uses: Azure/login@v2
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+      # - name: 'Az CLI login'
+      #   uses: Azure/login@v2
+      #   with:
+      #     client-id: ${{ secrets.AZURE_CLIENT_ID }}
+      #     subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      #     tenant-id: ${{ secrets.AZURE_TENANT_ID }}
 
-      - name: 'Run Azure Functions Action'
-        uses: Azure/functions-action@v1
-        with:
-          app-name: ${{ secrets.AZURE_FUNCTIONAPP_NAME }}
-          package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-          respect-funcignore: true
-          slot-name: ${{ env.AZURE_FUNCTIONAPP_SLOT }}
+      # - name: 'Run Azure Functions Action'
+      #   uses: Azure/functions-action@v1
+      #   with:
+      #     app-name: ${{ secrets.AZURE_FUNCTIONAPP_NAME }}
+      #     package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+      #     respect-funcignore: true
+      #     slot-name: ${{ env.AZURE_FUNCTIONAPP_SLOT }}
 
-      - name: 'Az CLI logout'
-        uses: Azure/CLI@v2
-        with:
-          inlineScript: |
-            az logout
-            az cache purge
-            az account clear
+      # - name: 'Az CLI logout'
+      #   uses: Azure/CLI@v2
+      #   with:
+      #     inlineScript: |
+      #       az logout
+      #       az cache purge
+      #       az account clear
