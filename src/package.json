@@ -21,7 +21,6 @@
     "axios": "latest"
   },
   "devDependencies": {
-    "applicationinsights-native-metrics": "latest",
     "azure-functions-core-tools": "latest",
     "eslint": "latest",
     "eslint-plugin-import": "latest",
